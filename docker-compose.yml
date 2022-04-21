@@ -1,0 +1,23 @@
+version: "3"
+
+volumes:
+  atlas_server_storage: {}
+
+services:
+  comms-server:
+    image: dcs/atlas-server:v2
+    working_dir: /app
+    env_file:
+      - .env
+    #environment:
+    #expose:
+    volumes:
+      - "atlas_server_storage:/app/storage/atlas"
+    restart: always
+    logging:
+      driver: syslog
+      options: { tag: atlas }
+    ports:
+      - 5100:5000
+    command: server /data --console-address ":9001"
+    entrypoint: ./entrypoint.sh
